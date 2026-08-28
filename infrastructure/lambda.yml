@@ -1,0 +1,18 @@
+# Shared Lambda Defaults
+runtime: python3.12
+memorySize: 256
+timeout: 10
+architecture: x86_64
+environment:
+  STAGE: ${opt:stage, self:provider.stage}
+  MONGODB_URI: ${env:MONGODB_URI, ''}
+  DB_NAME: ${env:DB_NAME, 'mfa_gateway'}
+  JWT_SECRET: ${env:JWT_SECRET, 'super-secret-mfa-gateway-jwt-key-32chars!'}
+  JWT_ALGORITHM: ${env:JWT_ALGORITHM, 'HS256'}
+  JWT_EXPIRATION_MINUTES: ${env:JWT_EXPIRATION_MINUTES, '60'}
+  OTP_EXPIRY_MINUTES: ${env:OTP_EXPIRY_MINUTES, '5'}
+  MAX_OTP_ATTEMPTS: ${env:MAX_OTP_ATTEMPTS, '3'}
+  OTP_PROVIDER: ${env:OTP_PROVIDER, 'mock'}
+  RATE_LIMIT_LOGIN_PER_MIN: ${env:RATE_LIMIT_LOGIN_PER_MIN, '5'}
+  RATE_LIMIT_OTP_PER_MIN: ${env:RATE_LIMIT_OTP_PER_MIN, '3'}
+  SES_SENDER_EMAIL: ${env:SES_SENDER_EMAIL, 'noreply@example.com'}

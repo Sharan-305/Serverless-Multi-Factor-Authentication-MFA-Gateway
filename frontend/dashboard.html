@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Protected Dashboard - Serverless MFA Gateway</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header>
+    <a href="dashboard.html" class="logo-container">
+      <div class="logo-icon">🛡️</div>
+      <div class="logo-text">MFA Gateway Dashboard</div>
+    </a>
+    <nav class="nav-links">
+      <span id="user-badge" class="badge badge-active" style="display: flex; align-items: center; gap: 0.3rem;">
+        <span style="width: 8px; height: 8px; background: #34d399; border-radius: 50%;"></span>
+        <span>PEP Protected</span>
+      </span>
+      <button id="logout-btn" class="nav-btn btn-secondary" style="cursor: pointer; border: 1px solid var(--bg-card-border);">
+        Logout
+      </button>
+    </nav>
+  </header>
+
+  <main style="align-items: flex-start;">
+    <div class="dashboard-grid">
+      
+      <!-- User Profile Card -->
+      <div class="dash-card">
+        <h2>👤 User Profile</h2>
+        
+        <div id="profile-loading" style="text-align: center; padding: 2rem;">
+          <div class="spinner" style="margin: 0 auto;"></div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Validating PEP Authorization...</p>
+        </div>
+
+        <div id="profile-content" class="hidden">
+          <div class="profile-field">
+            <span class="label">Full Name</span>
+            <span id="profile-name" class="value">-</span>
+          </div>
+
+          <div class="profile-field">
+            <span class="label">Username</span>
+            <span id="profile-username" class="value">-</span>
+          </div>
+
+          <div class="profile-field">
+            <span class="label">Email Address</span>
+            <span id="profile-email" class="value">-</span>
+          </div>
+
+          <div class="profile-field">
+            <span class="label">MFA Status</span>
+            <span class="badge badge-active">MFA Verified</span>
+          </div>
+
+          <div class="profile-field">
+            <span class="label">Session ID</span>
+            <span id="profile-session" class="value" style="font-family: monospace; font-size: 0.85rem; color: #818cf8;">-</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-Time Audit Log Table -->
+      <div class="dash-card">
+        <h2>📜 Security Audit Logs</h2>
+
+        <div id="audit-loading" style="text-align: center; padding: 2rem;">
+          <div class="spinner" style="margin: 0 auto;"></div>
+        </div>
+
+        <div id="audit-content" class="table-container hidden">
+          <table class="audit-table">
+            <thead>
+              <tr>
+                <th>Event</th>
+                <th>IP Address</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody id="audit-rows">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

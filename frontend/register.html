@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Serverless MFA Gateway</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo-container">
+      <div class="logo-icon">🛡️</div>
+      <div class="logo-text">MFA Gateway</div>
+    </a>
+    <nav class="nav-links">
+      <a href="login.html" class="nav-btn">Log In</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="auth-container">
+      <div class="auth-header">
+        <h1>Create Account</h1>
+        <p>Register to set up zero-trust MFA protection</p>
+      </div>
+
+      <div id="alert-banner" class="alert hidden"></div>
+
+      <form id="register-form">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" class="form-control" placeholder="John Doe" required>
+        </div>
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" class="form-control" placeholder="johndoe" required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" class="form-control" placeholder="john@example.com" required autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" class="form-control" placeholder="••••••••" required autocomplete="new-password">
+          <small style="display:block; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem;">
+            Must contain 8+ chars, uppercase, lowercase, digit, and special char.
+          </small>
+        </div>
+
+        <button type="submit" id="submit-btn" class="btn-submit">
+          <span>Create Account</span>
+          <div id="btn-spinner" class="spinner hidden"></div>
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        Already have an account? <a href="login.html">Log In</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/register.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Serverless MFA Gateway</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo-container">
+      <div class="logo-icon">🛡️</div>
+      <div class="logo-text">MFA Gateway</div>
+    </a>
+    <nav class="nav-links">
+      <a href="register.html" class="nav-btn nav-btn-primary">Register</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="auth-container">
+      <div class="auth-header">
+        <h1>Welcome Back</h1>
+        <p>Sign in with your credentials to initiate MFA</p>
+      </div>
+
+      <div id="alert-banner" class="alert hidden"></div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" class="form-control" placeholder="Enter your username" required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" class="form-control" placeholder="Enter your password" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" id="submit-btn" class="btn-submit">
+          <span>Sign In</span>
+          <div id="btn-spinner" class="spinner hidden"></div>
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        Don't have an account? <a href="register.html">Register here</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/login.js"></script>
+</body>
+</html>

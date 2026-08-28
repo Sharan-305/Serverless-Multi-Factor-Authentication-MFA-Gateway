@@ -1,0 +1,130 @@
+service: serverless-mfa-gateway
+
+useDotenv: true
+
+frameworkVersion: '>=3.0.0'
+
+provider:
+  name: aws
+  runtime: python3.12
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+  memorySize: 256
+  timeout: 10
+  environment:
+    STAGE: ${self:provider.stage}
+    MONGODB_URI: ${env:MONGODB_URI, ''}
+    DB_NAME: ${env:DB_NAME, 'mfa_gateway'}
+    JWT_SECRET: ${env:JWT_SECRET, 'super-secret-mfa-gateway-jwt-key-32chars!'}
+    JWT_ALGORITHM: ${env:JWT_ALGORITHM, 'HS256'}
+    JWT_EXPIRATION_MINUTES: ${env:JWT_EXPIRATION_MINUTES, '60'}
+    OTP_EXPIRY_MINUTES: ${env:OTP_EXPIRY_MINUTES, '5'}
+    MAX_OTP_ATTEMPTS: ${env:MAX_OTP_ATTEMPTS, '3'}
+    OTP_PROVIDER: ${env:OTP_PROVIDER, 'mock'}
+    RATE_LIMIT_LOGIN_PER_MIN: ${env:RATE_LIMIT_LOGIN_PER_MIN, '5'}
+    RATE_LIMIT_OTP_PER_MIN: ${env:RATE_LIMIT_OTP_PER_MIN, '3'}
+    SES_SENDER_EMAIL: ${env:SES_SENDER_EMAIL, 'noreply@example.com'}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: "arn:aws:logs:*:*:*"
+        - Effect: Allow
+          Action:
+            - ses:SendEmail
+            - ses:SendRawEmail
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - sns:Publish
+          Resource: "*"
+
+functions:
+  customAuthorizer:
+    handler: backend.functions.authorizer.handler
+
+  register:
+    handler: backend.functions.register.handler
+    events:
+      - http:
+          path: /register
+          method: post
+          cors: true
+
+  login:
+    handler: backend.functions.login.handler
+    events:
+      - http:
+          path: /login
+          method: post
+          cors: true
+
+  sendOtp:
+    handler: backend.functions.send_otp.handler
+    events:
+      - http:
+          path: /send-otp
+          method: post
+          cors: true
+
+  verifyOtp:
+    handler: backend.functions.verify_otp.handler
+    events:
+      - http:
+          path: /verify-otp
+          method: post
+          cors: true
+
+  logout:
+    handler: backend.functions.logout.handler
+    events:
+      - http:
+          path: /logout
+          method: post
+          cors: true
+          authorizer:
+            name: customAuthorizer
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
+            type: token
+
+  dashboardData:
+    handler: backend.functions.dashboard_data.handler
+    events:
+      - http:
+          path: /dashboard-data
+          method: get
+          cors: true
+          authorizer:
+            name: customAuthorizer
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
+            type: token
+
+resources:
+  Resources:
+    GatewayResponseDefault4XX:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'"
+          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: ApiGatewayRestApi
+
+    GatewayResponseDefault5XX:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'"
+          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
+        ResponseType: DEFAULT_5XX
+        RestApiId:
+          Ref: ApiGatewayRestApi

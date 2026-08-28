@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MFA Verification - Serverless MFA Gateway</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo-container">
+      <div class="logo-icon">🛡️</div>
+      <div class="logo-text">MFA Gateway</div>
+    </a>
+  </header>
+
+  <main>
+    <div class="auth-container">
+      <div class="auth-header">
+        <h1>Two-Factor Verification</h1>
+        <p id="otp-subtitle">Enter the 6-digit code dispatched to your email</p>
+      </div>
+
+      <div id="alert-banner" class="alert hidden"></div>
+
+      <!-- Debug OTP Banner for Easy Testing -->
+      <div id="debug-banner" class="alert alert-info hidden" style="font-family: monospace; word-break: break-all;"></div>
+
+      <form id="verify-form">
+        <div class="otp-input-container">
+          <input type="text" maxlength="1" class="otp-box" autofocus autocomplete="off">
+          <input type="text" maxlength="1" class="otp-box" autocomplete="off">
+          <input type="text" maxlength="1" class="otp-box" autocomplete="off">
+          <input type="text" maxlength="1" class="otp-box" autocomplete="off">
+          <input type="text" maxlength="1" class="otp-box" autocomplete="off">
+          <input type="text" maxlength="1" class="otp-box" autocomplete="off">
+        </div>
+
+        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+          <span>Time remaining: <strong id="timer" style="color: #818cf8;">05:00</strong></span>
+          <a href="#" id="resend-link" style="color: #818cf8; text-decoration: none;">Resend Code</a>
+        </div>
+
+        <button type="submit" id="submit-btn" class="btn-submit">
+          <span>Verify & Continue</span>
+          <div id="btn-spinner" class="spinner hidden"></div>
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        Need to switch account? <a href="login.html">Back to Login</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/verify.js"></script>
+</body>
+</html>
